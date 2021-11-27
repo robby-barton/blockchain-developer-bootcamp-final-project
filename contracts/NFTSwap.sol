@@ -4,6 +4,8 @@ pragma solidity 0.8.0;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
+// @title Contract for Swaping NFTs
+// @author Robby Barton
 contract NFTSwap is IERC721Receiver {
 	address public owner = msg.sender;
 
@@ -66,6 +68,12 @@ contract NFTSwap is IERC721Receiver {
 
 	constructor() {}
 
+	// @name createTrade
+	// @param _offeredTokenAddr Token Address for the offered NFT
+	// @param _offeredTokenId TokenId for the offered NFT
+	// @param _desiredTokenAddr Token Address for the desired NFT
+	// @param _desiredTokenId TokenId for the desired NFT
+	// @return bool True when trade is created
 	function createTrade(
 		address _offeredTokenAddr,
 		uint _offeredTokenId,
@@ -108,6 +116,9 @@ contract NFTSwap is IERC721Receiver {
 		return true;
 	}
 
+	// @name canceltrade
+	// @param _tradeNum TradeNum from the NFTTrade object to cancel
+	// @return bool True when the trade is canceled
 	function cancelTrade(
 		uint _tradeNum
 	) public isCreator(trades[_tradeNum].creator) isOpen(_tradeNum) returns (bool) {
@@ -124,6 +135,9 @@ contract NFTSwap is IERC721Receiver {
 		return true;
 	}
 
+	// @name completeTrade
+	// @param _tradeNum TradeNum from the NFTTrade object to complete
+	// @return bool True when trade completes
 	function completeTrade(
 		uint _tradeNum
 	) public isOpen(_tradeNum) ownsNFT(
@@ -155,11 +169,16 @@ contract NFTSwap is IERC721Receiver {
 	}
 
 	// required for contract to receive an ERC721
-	function onERC721Received(address, address, uint256, bytes calldata) public pure override returns (bytes4) {
+	function onERC721Received(
+		address,
+		address,
+		uint256,
+		bytes calldata
+	) public pure override returns (bytes4) {
 		return this.onERC721Received.selector;
 	}
 
-	// fallback so the contract doesn't get sent ether
+	// fallback that reverts when any transaction either sends ether or has empty data
 	receive() external payable {
 		revert();
 	}
