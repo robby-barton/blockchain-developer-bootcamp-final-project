@@ -1,5 +1,20 @@
 # NFT Trading Site
 
+## Prerequisites
+* Node.js >= 14v
+* Truffle
+* Ganache
+* Solidity v0.8.0
+
+## Local Testing
+
+### Smart Contracts
+1. Run `npm install`
+2. Run `ganache-cli`, ensure it is listening on port `8545`
+3. Run `truffle test`
+`
+
+## Project Description
 The goal of this project is to create a site where users can create trades for NFTs.
 
 NFTs are a big craze right now and while there are many places were you can go to auction or buy NFTs there isn't much mentioned about trading an NFT for another NFT which can be a big part of other "collector" type things.
