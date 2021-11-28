@@ -1,18 +1,30 @@
 # NFT Trading Site
 
+Current contract address:
+* Ropsten - [`0x60D2e86eCbca10B82619C7a7f7e0601A80033994`](https://ropsten.etherscan.io/address/0x60D2e86eCbca10B82619C7a7f7e0601A80033994)
+
 ## Prerequisites
 * Node.js >= 14v
 * Truffle
 * Ganache
 * Solidity v0.8.0
 
+## Development
+
+### Connecting with Ropsten
+Copy `env-example` to `.env`, then fill in the `MNEMONIC` and `INFURA_URL` variables to use when interacting with Ropsten.
+
 ## Local Testing
 
-### Smart Contracts
-1. Run `npm install`
-2. Run `ganache-cli`, ensure it is listening on port `8545`
-3. Run `truffle test`
-`
+### Smart Contract Unit Tests
+The smart contract `NFTSwap.sol` may be tested locally with the unit tests in `test/`. There is a provided ERC721 contract ([`TestNFT.sol`](test/TestNFT.sol)) that is used to create the NFTs that the contract is tested against.
+
+To run the unit tests associated with `NFTSwap.sol` run the following:
+```
+npm install
+ganache-cli # ensure it is listening on 8545
+truffle test
+```
 
 ## Project Description
 The goal of this project is to create a site where users can create trades for NFTs.
