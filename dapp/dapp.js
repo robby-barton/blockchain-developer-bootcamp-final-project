@@ -199,11 +199,22 @@ function createListing(auctionItem, auctionDiv) {
       from: ethereum.selectedAddress,
       value: web3.utils.toWei(bidPrice.value, 'ether')
     }, async function (error, txHash) {
-      let txReceipt = null;
-      while (txReceipt == null) {
-        await sleep(1000);
-        txReceipt = await web3.eth.getTransactionReceipt(txHash);
+      if (!error) {
+        txStatus.innerHTML = 'Transaction sent!';
+        let txReceipt = null;
+        while (txReceipt == null) {
+          await sleep(1000);
+          txReceipt = await web3.eth.getTransactionReceipt(txHash);
+        }
+        if (txReceipt.status == '0x0') {
+          txStatus.innerHTML = 'Contract call failed!';
+        } else {
+          txStatus.innerHTML = 'Contract call succeeded!';
+        }
+      } else {
+        txStatus.innerHTML = 'Transaction failed to send!';
       }
+      populateAuctionListings();
     });
   }
   bidDiv.appendChild(placeBid);
@@ -213,7 +224,26 @@ function createListing(auctionItem, auctionDiv) {
     const closeAuction = document.createElement('button');
     closeAuction.innerHTML = "Close Auction";
     closeAuction.onclick = async () => {
-      await auctionHouse.methods.closeAuction(auctionItem.itemId).send({from: ethereum.selectedAddress});
+      await auctionHouse.methods.closeAuction(auctionItem.itemId).send({
+        from: ethereum.selectedAddress},
+        async function (error, txHash) {
+          if (!error) {
+            txStatus.innerHTML = 'Transaction sent!';
+            let txReceipt = null;
+            while (txReceipt == null) {
+              await sleep(1000);
+              txReceipt = await web3.eth.getTransactionReceipt(txHash);
+            }
+            if (txReceipt.status == '0x0') {
+              txStatus.innerHTML = 'Contract call failed!';
+            } else {
+              txStatus.innerHTML = 'Contract call succeeded!';
+            }
+          } else {
+            txStatus.innerHTML = 'Transaction failed to send!';
+          }
+          populateAuctionListings();
+        });
     }
     itemDiv.appendChild(closeAuction);
   }
@@ -281,5 +311,23 @@ auctionCreate.onclick = async () => {
   const auctionHouse = new web3.eth.Contract(contractABI, contractAddress);
   auctionHouse.setProvider(window.ethereum);
 
-  await auctionHouse.methods.createAuction(auctionName, auctionDesc).send({from: ethereum.selectedAddress});
+  await auctionHouse.methods.createAuction(auctionName, auctionDesc).send({from: ethereum.selectedAddress},
+    async function (error, txHash) {
+      if (!error) {
+        txStatus.innerHTML = 'Transaction sent!';
+        let txReceipt = null;
+        while (txReceipt == null) {
+          await sleep(1000);
+          txReceipt = await web3.eth.getTransactionReceipt(txHash);
+        }
+        if (txReceipt.status == '0x0') {
+          txStatus.innerHTML = 'Contract call failed!';
+        } else {
+          txStatus.innerHTML = 'Contract call succeeded!';
+        }
+      } else {
+        txStatus.innerHTML = 'Transaction failed to send!';
+      }
+      populateAuctionListings();
+    });
 }
