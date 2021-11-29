@@ -9,16 +9,6 @@ contract("AuctionHouse", function (accounts) {
     instance = await AuctionHouse.new();
   });
 
-  describe("Variables", () => {
-    it("should have an owner", async () => {
-      assert.equal(typeof instance.owner, 'function', "the contract has no owner");
-    });
-
-    it("should have a totalAuctions", async () => {
-      assert.equal(typeof instance.totalAuctions, 'function', "the contract has no totalAuctions");
-    });
-  });
-
   describe("createAuction()", () => {
     it("should create an auction item", async () => {
       await instance.createAuction(
@@ -119,6 +109,32 @@ contract("AuctionHouse", function (accounts) {
       await instance.placeBid(0, { from: bob, value: bid });
       await instance.placeBid(0, { from: charlie, value: bid });
       await instance.closeAuction(0, { from: alice });
+      assert.equal(await web3.eth.getBalance(instance.address), 0);
+    });
+  });
+
+  describe("cancelAuction()", () => {
+    beforeEach(async () => {
+      await instance.createAuction(
+        "test auction",
+        "this is a test auction",
+        { from: alice }
+      );
+    });
+
+    it("should fail if item is invalid", async () => {
+      await catchRevert(instance.cancelAuction(1, { from: _owner }));
+    });
+
+    it("should fail if called by non-owner", async () => {
+      await catchRevert(instance.cancelAuction(0, { from: alice }));
+    });
+
+    it("should drain all money", async () => {
+      const bid = web3.utils.toBN(1);
+      await instance.placeBid(0, { from: bob, value: bid });
+      await instance.placeBid(0, { from: charlie, value: bid });
+      await instance.cancelAuction(0, { from: _owner });
       assert.equal(await web3.eth.getBalance(instance.address), 0);
     });
   });
