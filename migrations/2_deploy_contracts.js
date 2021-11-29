@@ -1,5 +1,5 @@
-var NFTSwap = artifacts.require("./NFTSwap.sol");
+var AuctionHouse = artifacts.require("./AuctionHouse.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(NFTSwap);
+  deployer.deploy(AuctionHouse);
 };
