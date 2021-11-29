@@ -1,7 +1,7 @@
 # Auction House
 
 Current contract address:
-* Ropsten - [`0x2603f999e632FAaC9e87De608197E6eb9a672b2a`](https://ropsten.etherscan.io/address/0x2603f999e632FAaC9e87De608197E6eb9a672b2a)
+* Ropsten - [`0xd6CfC455770b49d5B574B39ae54124870126C357`](https://ropsten.etherscan.io/address/0xd6CfC455770b49d5B574B39ae54124870126C357)
 
 ## Prerequisites
 * Node.js >= 14v
