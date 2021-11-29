@@ -77,6 +77,17 @@ contract("AuctionHouse", function (accounts) {
       assert.equal(await web3.eth.getBalance(instance.address), firstBid.toNumber() + secondBid.toNumber());
     });
 
+    it("should combine multiple bids from a single address", async () => {
+      const firstBid = web3.utils.toBN(1);
+      const secondBid = web3.utils.toBN(2);
+      await instance.placeBid(0, { from: bob, value: firstBid });
+      await instance.placeBid(0, { from: bob, value: secondBid });
+      await instance.placeBid(0, { from: charlie, value: firstBid });
+      assert.equal(await instance.getNumBids(0), 2);
+      assert.equal(await web3.eth.getBalance(instance.address),
+        firstBid.toNumber() + firstBid.toNumber() + secondBid.toNumber());
+    });
+
     it("should fail if auction is closed", async () => {
       const bid = web3.utils.toBN(1);
       await instance.placeBid(0, { from: bob, value: bid });

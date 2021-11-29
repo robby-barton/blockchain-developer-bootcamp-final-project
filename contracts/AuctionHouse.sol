@@ -62,7 +62,17 @@ contract AuctionHouse {
 	function placeBid(uint _itemId) public payable validItem(_itemId) isOpen(_itemId) hasValue() {
 		AuctionItem storage _item = auctions[_itemId];
 
-		_item.bids[_item.numBids++] = Bidder({ bidder: payable(msg.sender), bid: msg.value });
+		uint i = 0;
+		for (i; i < _item.numBids; i++) {
+			if (_item.bids[i].bidder == msg.sender) {
+				_item.bids[i].bid = _item.bids[i].bid + msg.value;
+				break;
+			}
+		}
+
+		if (i == _item.numBids) {
+			_item.bids[_item.numBids++] = Bidder({ bidder: payable(msg.sender), bid: msg.value });
+		}
 	}
 
 	function getNumBids(uint _itemId) public view validItem(_itemId) returns (uint) {
