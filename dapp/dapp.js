@@ -335,6 +335,7 @@ window.onload = function () {
   if (typeof window.ethereum !== 'undefined') {
     if (ethereum.selectedAddress !== null) {
       mmCurrentAccount.innerHTML = "Connected: " + ethereum.selectedAddress;
+      populateAuctionListings();
       mmEnable.disabled = true;
     } else {
       mmCurrentAccount.innerHTML = "Not connected";
@@ -342,8 +343,6 @@ window.onload = function () {
   } else {
     mmCurrentAccount.innerHTML = "No wallet installed";
   }
-
-  populateAuctionListings();
 };
 
 // get access to MetaMask
