@@ -5,6 +5,8 @@ Deployed UI: https://auction-house-dapp.vercel.app/
 Current contract address:
 * Ropsten - [`0xF7F4397F4A637b001361344736015fAd438ECc57`](https://ropsten.etherscan.io/address/0xF7F4397F4A637b001361344736015fAd438ECc57)
 
+Demo: https://youtu.be/9Uba3fKh1Fs
+
 ## Prerequisites
 * Node.js >= 14v
 * Truffle
